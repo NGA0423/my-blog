@@ -1,4 +1,4 @@
-package com.nga.dao;
+package com.nga.util;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -7,8 +7,9 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class User {
-    private String username;
-    private String password;
-    private String salt;
+public class ResultUtil<T> {
+    private int msg;
+    private boolean success;
+    private T detail;
+
 }
