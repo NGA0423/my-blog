@@ -13,6 +13,7 @@ public class AdminConfig implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(new LoginHandlerInterceptor())
                 .addPathPatterns("/admin/**")
+                .addPathPatterns("/admin/article/**")
                 .excludePathPatterns("/admin/login", "/admin/toLogin", "/css/**", "/js/**", "/fonts/**", "/images/**", "/layui","/admin/register");
     }
 }

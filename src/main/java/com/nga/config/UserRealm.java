@@ -35,7 +35,7 @@ public class UserRealm extends AuthorizingRealm {
             // 抛出异常
             return null;
         }else {
-            credentialsSalt=ByteSource.Util.bytes(user.getUsername());
+            credentialsSalt=ByteSource.Util.bytes(user.getSalt());
         }
         return new SimpleAuthenticationInfo(user,user.getPassword(),credentialsSalt,realmName);
     }

@@ -43,7 +43,7 @@ public class ShiroConfig {
         matcher.setHashAlgorithmName("MD5");
         // 设置加密次数
         matcher.setHashIterations(1024);
-        matcher.setStoredCredentialsHexEncoded(true);
+//        matcher.setStoredCredentialsHexEncoded(true);
         return matcher;
     }
 }
