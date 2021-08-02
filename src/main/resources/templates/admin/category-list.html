@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html class="category" lang="en" xmlns:th="http://www.tymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>发布文章</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
+    <link rel="stylesheet" th:href="@{/css/font.css}">
+    <link rel="stylesheet" th:href="@{/css/xadmin.css}">
+    <script type="text/javascript" src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+    <script th:src="@{/layui/layui.js}" charset="utf-8"></script>
+    <script type="text/javascript" th:src="@{/js/xadmin.js}"></script>
+    <!--[if lt IE 9]>
+      <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+      <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+<body>
+<div class="x-nav">
+            <span class="layui-breadcrumb">
+                <a>
+                    <cite>发布文章</cite></a>
+            </span>
+</div>
+<div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-md12">
+            <div class="layui-card">
+                <div class="layui-card-body ">
+                    <div class="col-md-6">
+                        <div class="panel panel-color panel-primary">
+                            <div class="panel-heading">
+                                <h1 class="panel-title">分类列表</h1>
+                            </div>
+                            <div class="panel-body">
+                                <th:block>
+                                    <div class="btn-group-category m-b-10">
+                                        <th:block>
+                                            <button type="button" class="btn btn-success waves-effect waves-light">
+                                                <th:block th:text="洛尘"/>
+                                                <th:block th:text="123"/>
+                                            </button>
+                                        </th:block>
+                                        <th:bloc>
+                                            <button  type="button" class="btn btn-success dropdown-toggle waves-effect waves-light"
+                                                     data-toggle="dropdown" aria-expanded="false">
+                                                <th:block th:text="洛尘"/>
+                                                <th:block th:text="321"/>
+                                                <span class="caret"></span>
+                                            </button>
+                                            <ul class="dropdown-menu" role="menu">
+                                                <li><a href="javascript:void(0)" class="edit-category">修改</a> </li>
+                                                <li><a href="javascript:void(0)" class="del-category">删除</a> </li>
+                                            </ul>
+                                        </th:bloc>
+                                    </div>
+                                </th:block>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="panel panel-color panel-primary">
+                            <div class="panel-heading">
+                                <h1 class="panel-title">标签列表</h1>
+                            </div>
+                            <div class="panel-body">
+                                <th:block>
+                                    <div class="btn-group-category m-b-10">
+                                        <th:block>
+                                            <button type="button" class="btn-category btn-success waves-effect waves-light">
+                                                <th:block th:text="洛尘"/>
+                                                <th:block th:text="123"/>
+                                            </button>
+                                        </th:block>
+                                        <th:bloc>
+<!--                                            <button  type="button" class="btn btn-success dropdown-toggle waves-effect waves-light"-->
+<!--                                                     data-toggle="dropdown" aria-expanded="false">-->
+<!--                                                <th:block th:text="洛尘"/>-->
+<!--                                                <th:block th:text="321"/>-->
+<!--                                                <span class="caret"></span>-->
+<!--                                            </button>-->
+                                            <ul class="dropdown-menu" role="menu">
+                                                <li><a href="javascript:void(0)" class="edit-category">修改</a> </li>
+                                                <li><a href="javascript:void(0)" class="del-category">删除</a> </li>
+                                            </ul>
+                                        </th:bloc>
+                                    </div>
+                                </th:block>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="panel panel-default">
+                            <div class="panel-body">
+                                <form id="cform" class="form-inline" role="form">
+                                    <input type="hidden" id="mid"/>
+                                    <div class="form-group">
+                                        <input type="text" class="form-control" id="cname" placeholder="请输入分类名称"/>
+                                    </div>
+                                    <button id="save-category-btn" type="button"
+                                            class="btn btn-success waves-effect waves-light m-l-10">保存分类
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</div>
+<script type="text/javascript">
+    var tale =new $.tale();
+    $('#save-category-btn').click(function () {
+        var cname=$('#cform #cname').val();
+        var mid=$('#cform #mid').val();
+        if (cname&&cname!=''){
+            tale.post({
+                url:'/admin/category/save',
+                data:{mid:mid,cname:cname},
+                success:function (result) {
+                    $('#cform #mid').val('');
+                    $('#cform #cname').val('');
+                    // if (result && result.code='success'){
+                    //
+                    // }
+                }
+            })
+        }
+    })
+</script>
+</body>
+</html>

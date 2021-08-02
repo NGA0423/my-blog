@@ -16,6 +16,24 @@
           <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
           <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
         <![endif]-->
+
+        <style>
+            input{
+                width: 30%;
+                height: 28px;
+                border-radius: 2px;
+                border: 1px solid #eee;
+                text-indent: 5px;
+            }
+            input::-webkit-input-placeholder{
+                color: #999;
+                -webkit-transition: color.5s;
+            }
+            input:focus::-webkit-input-placeholder, input:hover::-webkit-input-placeholder{
+                color: #c2c2c2;
+                -webkit-transition: color.5s;
+            }
+        </style>
     </head>
     
     <body>
@@ -35,40 +53,12 @@
                         <div class="layui-card-body ">
                             <form class="layui-form layui-col-md12  layui-form-pane">
                              <div class="layui-form-item x-city" id="start">
-                              <label class="layui-form-label">城市联动</label>
-                              <div class="layui-input-inline">
-                                <select name="province" lay-filter="province">
-                                  <option value="">请选择省</option>
-                                </select>
-                              </div>
-                              <div class="layui-input-inline">
-                                <select name="city" lay-filter="city">
-                                  <option value="">请选择市</option>
-                                </select>
-                              </div>
-                              <div class="layui-input-inline">
-                                <select name="area" lay-filter="area">
-                                  <option value="">请选择县/区</option>
-                                </select>
-                              </div>
+                              <label class="layui-form-label">文章标题</label>
+                              <input type="text" placeholder="请输入文章标题(必填)" required="required">
                             </div>
                             <div class="layui-form-item x-city" id="end">
-                              <label class="layui-form-label">城市联动</label>
-                              <div class="layui-input-inline">
-                                <select name="province" lay-filter="province">
-                                  <option value="">请选择省</option>
-                                </select>
-                              </div>
-                              <div class="layui-input-inline">
-                                <select name="city" lay-filter="city">
-                                  <option value="">请选择市</option>
-                                </select>
-                              </div>
-                              <div class="layui-input-inline">
-                                <select name="area" lay-filter="area">
-                                  <option value="">请选择县/区</option>
-                                </select>
-                              </div>
+                              <label class="layui-form-label">文章标签</label>
+                                <input type="text" placeholder="请输入文章标题(必填)" required="required">
                             </div>
                           </form>
                         </div>
@@ -89,6 +79,7 @@
                 </div>
             </div>
         </div>
+
         <script type="text/javascript" src="../../static/js/xcity.js"></script>
         <script>
           layui.use(['form','code'], function(){

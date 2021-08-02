@@ -36,6 +36,9 @@
             <artifactId>mybatis-spring-boot-starter</artifactId>
             <version>2.1.0</version>
         </dependency>
+        <!-- 百度富文本编辑器 -->
+
+
 
         <dependency>
             <groupId>org.springframework.experimental</groupId>
