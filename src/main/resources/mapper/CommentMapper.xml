@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.nga.mapper.CommentMapper">
+    <sql id="BASE_TABLE">
+        t_comments
+    </sql>
+    <sql id="BASE_COLUMN">
+        cm.coid,cm.cid,cm.created,cm.author,cm.authorId,cm.ownerId,cm.mail,cm.url,cm.ip,cm.agent,cm.content,cm.type,cm.status,cm.parent
+    </sql>
+    <!--  根据条件获取评论列表  -->
+    <select id="getCommentByCond" resultType="CommentDAO" parameterType="CommentCond">
+        select
+        <include refid="BASE_COLUMN"/>
+        from
+        <include refid="BASE_TABLE"/> as cm
+        <where>
+            <if test="status!=null">
+                and cm.status=#{status}
+            </if>
+            <if test="startTime!=null">
+                and cm.created=#{startTime}
+            </if>
+            <if test="endTime!=null">
+                and cm.created=#{endTime}
+            </if>
+            <if test="parent!=null">
+                and cm.parent=#{parent}
+            </if>
+        </where>
+        order by cm.created
+    </select>
+    <!--  获取评论数量  -->
+    <select id="getCommentsCount" resultType="java.lang.Long">
+        SELECT count(*)
+        FROM
+        <include refid="BASE_TABLE"/>
+    </select>
+</mapper>

@@ -1,6 +1,6 @@
 package com.nga.service.impl;
 
-import com.nga.dao.User;
+import com.nga.dao.UserDAO;
 import com.nga.mapper.UserMapper;
 import com.nga.service.UserService;
 import com.nga.util.MD5_Shiro;
@@ -15,14 +15,14 @@ public class UserServiceImpl implements UserService {
     UserMapper userMapper;
 
     @Override
-    public User queryUserByName(String username) {
+    public UserDAO queryUserByName(String username) {
         return userMapper.queryUserByName(username);
     }
 
     @Override
-    public String addUser(User user) {
+    public String addUser(UserDAO user) {
         // 查询注册的用户名是否存在
-        User info = userMapper.queryUserByName(user.getUsername());
+        UserDAO info = userMapper.queryUserByName(user.getUsername());
         if (info!=null){
             return "134";
         }else {

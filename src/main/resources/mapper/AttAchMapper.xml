@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.nga.mapper.AttAchMapper">
+    <sql id="BASE_TABLE">
+        t_attach
+    </sql>
+    <!--  用户表  -->
+    <sql id="TABLE_USER">
+        <include refid="com.nga.mapper.UserMapper.BASE_TABLE"/>
+    </sql>
+    <!--  附件表单的基本列  -->
+    <sql id="BASE_COLUMN">
+          aa.id, aa.fname, aa.ftype, aa.fkey, aa.authorId, aa.created,
+    </sql>
+    <!--  关联查询的用户表需要的字段  -->
+    <sql id="REL_USER_COLUMN">
+        u.username
+    </sql>
+    <select id="getAttsCount" resultType="java.lang.Long">
+        SELECT count(*)
+        FROM
+        <include refid="BASE_TABLE"/>
+    </select>
+</mapper>

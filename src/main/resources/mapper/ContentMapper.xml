@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.nga.mapper.ContentMapper">
+    <sql id="BASE_TABLE">
+        t_contents
+    </sql>
+    <sql id="BASE_COLUMN">
+        c.cid,c.title,c.titlePic,c.slug,c.created,c.modified,c.content,c.authorId,
+        c.type,c.status,c.tags,c.categories,c.hits,c.commentsNum,c.allowComment,c.allowComment,
+        c.allowPing,c.allowFeed
+    </sql>
+    <!--  根据条件获取文章列表  -->
+    <select id="getArticlesByCond" resultType="ContentDAO" parameterType="ContentCond">
+        select
+        <include refid="BASE_COLUMN"/>
+        from
+        <include refid="BASE_TABLE"/> as c
+         <where>
+             <if test="tag!=null">
+                 and c.tag like CONCAT('%',#{tag},'%')
+             </if>
+             <if test="category!=null">
+                 and c.categories like CONCAT('%',#{category},'%')
+             </if>
+             <if test="status!=null">
+                 and c.status like CONCAT('%',#{status},'%')
+             </if>
+             <if test="title!=null">
+                 and c.title like CONCAT('%',#{title},'%')
+             </if>
+             <if test="content!=null">
+                 and c.content like CONCAT('%',#{content},'%')
+             </if>
+             <if test="type!=null">
+                 and c.type like CONCAT('%',#{type},'%')
+             </if>
+             <if test="startTime!=null">
+                 and c.created like CONCAT('%',#{startTime},'%')
+             </if>
+             <if test="endTime!=null">
+                 and c.created like CONCAT('%',#{endTime},'%')
+             </if>
+         </where>
+         order by c.created desc
+    </select>
+    <!-- 获取文章总数 -->
+    <select id="getArticleCount" resultType="java.lang.Long">
+        SELECT count(*)
+        FROM <include refid="BASE_TABLE"></include>
+    </select>
+</mapper>

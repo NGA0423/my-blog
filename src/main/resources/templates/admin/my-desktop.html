@@ -37,28 +37,28 @@
                                     <a href="javascript:;" class="x-admin-backlog-body">
                                         <h3>文章数</h3>
                                         <p>
-                                            <cite>66</cite></p>
+                                            <cite>[[${statistics.articles}]]</cite></p>
                                     </a>
                                 </li>
                                 <li class="layui-col-md2 layui-col-xs6">
                                     <a href="javascript:;" class="x-admin-backlog-body">
                                         <h3>留言数</h3>
                                         <p>
-                                            <cite>12</cite></p>
+                                            <cite>[[${statistics.comments}]]</cite></p>
                                     </a>
                                 </li>
                                 <li class="layui-col-md2 layui-col-xs6">
                                     <a href="javascript:;" class="x-admin-backlog-body">
                                         <h3>上传附件数</h3>
                                         <p>
-                                            <cite>99</cite></p>
+                                            <cite>[[${statistics.attachs}]]</cite></p>
                                     </a>
                                 </li>
                                 <li class="layui-col-md2 layui-col-xs6">
                                     <a href="javascript:;" class="x-admin-backlog-body">
                                         <h3>友链数</h3>
                                         <p>
-                                            <cite>67</cite></p>
+                                            <cite>[[${statistics.links}]]</cite></p>
                                     </a>
                                 </li>
                             </ul>
@@ -70,10 +70,8 @@
                         <div class="layui-card-header">最近文章
                             </div>
                         <div class="layui-card-body  ">
-                            <p class="layuiadmin-big-font">33,555</p>
-                            <p>新下载
-                                <span class="layuiadmin-span-color">10%
-                                    <i class="layui-inline layui-icon layui-icon-face-smile-b"></i></span>
+                            <p class="layuiadmin-big-font" th:each="article : ${articles}">
+                                <a target="_blank" th:text="${article.title}" style="color: #0000FF;font-size: 16px"></a>
                             </p>
                         </div>
                     </div>
@@ -83,10 +81,8 @@
                         <div class="layui-card-header">最近留言
                             </div>
                         <div class="layui-card-body ">
-                            <p class="layuiadmin-big-font">33,555</p>
-                            <p>新下载
-                                <span class="layuiadmin-span-color">10%
-                                    <i class="layui-inline layui-icon layui-icon-face-smile-b"></i></span>
+                            <p class="layuiadmin-big-font" th:each="comment : ${comments}">
+                                <a target="_blank" th:text="${comment.author}"></a>
                             </p>
                         </div>
                     </div>
@@ -98,9 +94,9 @@
                         <div class="layui-card-body ">
                             <table class="layui-table">
                                 <tbody>
-                                    <tr>
-                                        <th>xxx版本</th>
-                                        <td>1.0.180420</td></tr>
+                                    <tr th:each="log : ${logs}">
+                                        <th>[[${commons.fmtdate(log.created,"yyyy-MM-dd HH:mm:ss")}]]</th>
+                                        <td>[[${log.action}]]</td></tr>
                                 </tbody>
                             </table>
                         </div>

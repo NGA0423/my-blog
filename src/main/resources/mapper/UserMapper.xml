@@ -1,11 +1,64 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.nga.mapper.UserMapper">
-    <select id="queryUserByName" parameterType="String" resultType="User">
-        select * from `t_user` where username=#{username}
+    <sql id="BASE_TABLE">
+        t_users
+    </sql>
+    <sql id="BASE_COLUMN">
+        id,username,password,salt,email,homeUrl,screenName,created,activated,logged,groupName,phone
+    </sql>
+    <update id="updateUserInfo" parameterType="UserDAO">
+        update
+        <include refid="BASE_TABLE"/>
+        <set>
+            <if test="password!=null">
+                password=#{password,jdbcType=VARCHAR}
+            </if>
+            <if test="salt!=null">
+                salt=#{salt,jdbcType=VARCHAR}
+            </if>
+            <if test="email!=null">
+                email=#{email,jdbcType=VARCHAR}
+            </if>
+            <if test="screenName!=null">
+                screenName=#{screenName,jdbcType=VARCHAR}
+            </if>
+            <if test="phone!=null">
+                phone=#{phone,jdbcType=VARCHAR}
+            </if>
+        </set>
+        where username=#{username,jdbcType=VARCHAR}
+    </update>
+    <select id="queryUserByName" parameterType="String" resultType="UserDAO">
+        select
+        <include refid="BASE_COLUMN"/>
+        from
+        <include refid="BASE_TABLE"/>
+        where
+        username=#{username,jdbcType=VARCHAR}
     </select>
-    <insert id="addUser" parameterType="User">
-        insert into `t_user`(username,password,salt) values (#{username},#{password},#{salt})
+    <insert id="addUser" parameterType="UserDAO">
+        insert into <include refid="BASE_TABLE"/>
+        <include refid="BASE_COLUMN"/>
+        values
+        <if test="username!=null">
+            username=#{username,jdbcType=VARCHAR}
+        </if>
+        <if test="password!=null">
+            password=#{password,jdbcType=VARCHAR}
+        </if>
+        <if test="salt!=null">
+            salt=#{salt,jdbcType=VARCHAR}
+        </if>
+        <if test="email!=null">
+            email=#{email,jdbcType=VARCHAR}
+        </if>
+        <if test="screenName!=null">
+            screenName=#{screenName,jdbcType=VARCHAR}
+        </if>
+        <if test="phone!=null">
+            phone=#{phone,jdbcType=VARCHAR}
+        </if>
     </insert>
 
 </mapper>

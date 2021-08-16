@@ -1,7 +1,6 @@
 package com.nga.config;
 
-import com.nga.dao.User;
-import com.nga.service.UserService;
+import com.nga.dao.UserDAO;
 import com.nga.service.impl.UserServiceImpl;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
@@ -26,7 +25,7 @@ public class UserRealm extends AuthorizingRealm {
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
         UsernamePasswordToken userToken= (UsernamePasswordToken) token;
-        User user = userService.queryUserByName(userToken.getUsername());
+        UserDAO user = userService.queryUserByName(userToken.getUsername());
         // 当前realm对象的name
         String realmName = getName();
         // 盐值

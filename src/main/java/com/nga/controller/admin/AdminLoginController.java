@@ -1,8 +1,15 @@
 package com.nga.controller.admin;
 
-import com.nga.dao.User;
+import com.github.pagehelper.PageInfo;
+import com.nga.dao.CommentDAO;
+import com.nga.dao.ContentDAO;
+import com.nga.dao.LogDAO;
+import com.nga.dao.UserDAO;
+import com.nga.service.ContentService;
+import com.nga.service.LogService;
 import com.nga.service.impl.UserServiceImpl;
 import com.nga.util.ResultUtil;
+import com.nga.util.StatisticsUtil;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.IncorrectCredentialsException;
 import org.apache.shiro.authc.UnknownAccountException;
@@ -15,9 +22,9 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 @Controller
 @RequestMapping("/admin")
@@ -25,6 +32,11 @@ public class AdminLoginController {
 
     @Autowired
     private UserServiceImpl userService;
+
+    @Autowired
+    private ContentService contentService;
+    @Autowired
+    private LogService logService;
 
     @GetMapping("/toLogin")
     public String toLogin(){
@@ -67,14 +79,23 @@ public class AdminLoginController {
         model.addAttribute("nowDate",format);
 
         Object username = session.getAttribute("loginUser");
+        StatisticsUtil statistics = contentService.getArticleCount();
+        List<ContentDAO> contents = contentService.getNewArticles(5);
+        List<CommentDAO> comments = contentService.getComments(5);
+        // 获取最新的20条日志
+        PageInfo<LogDAO> logs = logService.getLogs(1, 5);
+        model.addAttribute("articles",contents);
+        model.addAttribute("comments",comments);
+        model.addAttribute("statistics",statistics);
         model.addAttribute("username",username);
+        model.addAttribute("logs",logs);
 
         return "admin/my-desktop";
     }
 
     @PostMapping("/register")
     @ResponseBody
-    public ResultUtil register(User user){
+    public ResultUtil register(UserDAO user){
         String msg = userService.addUser(user);
         if ("134".equals(msg)){
             return new ResultUtil(-1,false,"该用户名已被注册!");

@@ -1,8 +1,8 @@
 package com.nga.service;
 
-import com.nga.dao.User;
+import com.nga.dao.UserDAO;
 
 public interface UserService {
-    public User queryUserByName(String username);
-    public String addUser(User user);
+    public UserDAO queryUserByName(String username);
+    public String addUser(UserDAO user);
 }
