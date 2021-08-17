@@ -8,6 +8,7 @@ import com.nga.dao.UserDAO;
 import com.nga.service.ContentService;
 import com.nga.service.LogService;
 import com.nga.service.impl.UserServiceImpl;
+import com.nga.util.CommonsUtil;
 import com.nga.util.ResultUtil;
 import com.nga.util.StatisticsUtil;
 import org.apache.shiro.SecurityUtils;
@@ -84,11 +85,16 @@ public class AdminLoginController {
         List<CommentDAO> comments = contentService.getComments(5);
         // 获取最新的20条日志
         PageInfo<LogDAO> logs = logService.getLogs(1, 5);
+        List<LogDAO> list = logs.getList();
+        for (LogDAO log:list){
+            String fmdate = CommonsUtil.fmdate(log.getCreated(),"yyyy-MM-dd HH:mm:ss");
+            System.out.println(new java.util.Date().getTime());
+        }
         model.addAttribute("articles",contents);
         model.addAttribute("comments",comments);
         model.addAttribute("statistics",statistics);
         model.addAttribute("username",username);
-        model.addAttribute("logs",logs);
+        model.addAttribute("logs",list);
 
         return "admin/my-desktop";
     }

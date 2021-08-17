@@ -92,11 +92,11 @@
                     <div class="layui-card">
                         <div class="layui-card-header">系统日志</div>
                         <div class="layui-card-body ">
-                            <table class="layui-table">
+                            <table class="layui-table" th:each="log : ${logs}">
                                 <tbody>
-                                    <tr th:each="log : ${logs}">
-                                        <th>[[${commons.fmtdate(log.created,"yyyy-MM-dd HH:mm:ss")}]]</th>
-                                        <td>[[${log.action}]]</td></tr>
+                                    <tr>
+                                        <th th:text="${#dates.format(log.created*1000L,'yyyy-MM-dd HH:mm:ss')}"></th>
+                                        <td th:text="${log.action}"></td></tr>
                                 </tbody>
                             </table>
                         </div>
