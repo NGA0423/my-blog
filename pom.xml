@@ -37,13 +37,18 @@
             <version>2.1.0</version>
         </dependency>
         <!-- 百度富文本编辑器 -->
-
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger2</artifactId>
+            <version>2.9.2</version>
+        </dependency>
         <!--    分页插件    -->
         <dependency>
             <groupId>com.github.pagehelper</groupId>
             <artifactId>pagehelper-spring-boot-starter</artifactId>
             <version>1.2.5</version>
         </dependency>
+
         <dependency>
             <groupId>org.springframework.experimental</groupId>
             <artifactId>spring-native</artifactId>
@@ -100,6 +105,7 @@
             <artifactId>shiro-spring</artifactId>
             <version>1.4.1</version>
         </dependency>
+
         <!--Shiro 整合thymeleaf -->
         <dependency>
             <groupId>com.github.theborakompanioni</groupId>
