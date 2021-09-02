@@ -14,4 +14,10 @@ public interface LogMapper {
      * @return
      */
     public List<LogDAO> getLogs();
+
+    /**
+     * 添加日志
+     * @param logDAO
+     */
+    public void addLog(LogDAO logDAO);
 }

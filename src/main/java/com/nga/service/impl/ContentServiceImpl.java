@@ -1,18 +1,21 @@
 package com.nga.service.impl;
 
+import com.nga.constan.ErrorConstant;
 import com.nga.dao.CommentDAO;
+import com.nga.dao.RelationshipDAO;
 import com.nga.dao.cond.CommentCond;
 import com.nga.dao.cond.ContentCond;
 import com.nga.dao.ContentDAO;
-import com.nga.mapper.AttAchMapper;
-import com.nga.mapper.CommentMapper;
-import com.nga.mapper.ContentMapper;
-import com.nga.mapper.MetaMapper;
+import com.nga.mapper.*;
 import com.nga.service.ContentService;
+import com.nga.service.MetaService;
+import com.nga.util.BusinessException;
 import com.nga.util.StatisticsUtil;
 import com.nga.util.TypesUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -27,6 +30,10 @@ public class ContentServiceImpl implements ContentService {
     private MetaMapper metaMapper;
     @Autowired
     private AttAchMapper attAchMapper;
+    @Autowired
+    private RelationshipMapper relationshipMapper;
+    @Autowired
+    private MetaService metaService;
 
 
     /**
@@ -73,4 +80,80 @@ public class ContentServiceImpl implements ContentService {
         statistics.setAttachs(atts);
         return statistics;
     }
+
+    /**
+     * 根据编号删除文章
+     *
+     * @param cid
+     */
+    @Override
+    public void deleteArticleById(Integer cid) {
+        if (cid == null)
+            throw BusinessException.withErrorCode(ErrorConstant.Common.PARAM_IS_EMPTY);
+        contentMapper.deleteArticleById(cid);
+        // 同时也要删除该文章的所有评论
+        List<CommentDAO> comments = commentMapper.getCommentsByCId(cid);
+        if (comments != null && comments.size() > 0) {
+            comments.forEach(comment -> {
+                commentMapper.deleteComment(comment.getCoid());
+            });
+        }
+        // 删除标签和分类关联
+        List<RelationshipDAO> relationShipByCid = relationshipMapper.getRelationShipByCid(cid);
+        if (relationShipByCid != null && relationShipByCid.size() > 0) {
+            relationshipMapper.deleteRelationShipByCId(cid);
+        }
+    }
+
+    /**
+     * 更新分类
+     *
+     * @param ordinal
+     * @param newCatefory
+     */
+    @Override
+    @Transactional
+    @CacheEvict(value = {"articleCache", "articleCaches"}, allEntries = true, beforeInvocation = true)
+    public void updateCategory(String ordinal, String newCatefory) {
+        ContentCond cond = new ContentCond();
+        cond.setCategory(ordinal);
+        List<ContentDAO> articlesByCond = contentMapper.getArticlesByCond(cond);
+        articlesByCond.forEach(article->{
+            article.setCategories(article.getCategories().replace(ordinal,newCatefory));
+            contentMapper.updateArticleById(article);
+        });
+    }
+
+    /**
+     * 根据编号获取文章
+     *
+     * @param cid
+     * @return
+     */
+    @Override
+    @CacheEvict(value = {"articleCache", "articleCaches"}, allEntries = true, beforeInvocation = true)
+    public ContentDAO getArticleById(Integer cid) {
+        if (cid==null)
+            throw BusinessException.withErrorCode(ErrorConstant.Common.PARAM_IS_EMPTY);
+        return contentMapper.getArticleById(cid);
+    }
+
+    /**
+     * 更新文章
+     *
+     * @param contentDAO
+     */
+    @Override
+    public void updateArticleById(ContentDAO contentDAO) {
+        // 分类和标签
+        String tags = contentDAO.getTags();
+        String categories = contentDAO.getCategories();
+
+        contentMapper.updateArticleById(contentDAO);
+        Integer cid = contentDAO.getCid();
+        relationshipMapper.deleteRelationShipByCId(cid);
+        metaService.addMetas(cid,tags,TypesUtil.TAG.getType());
+        metaService.addMetas(cid,categories,TypesUtil.CATEGORY.getType());
+    }
+
 }

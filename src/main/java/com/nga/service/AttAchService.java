@@ -1,16 +1,15 @@
-package com.nga.mapper;
+package com.nga.service;
 
 import com.github.pagehelper.PageInfo;
 import com.nga.dao.AttAchDAO;
 import com.nga.model.AttAchModel;
-import org.apache.ibatis.annotations.Mapper;
-import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-@Repository
-@Mapper
-public interface AttAchMapper {
+/**
+ * 附件服务
+ */
+public interface AttAchService {
     /**
      * 添加单个附件信息
      *
@@ -50,14 +49,9 @@ public interface AttAchMapper {
     /**
      * 获取所有的附件信息
      *
+     * @param pageNum
+     * @param pageSize
      * @return
      */
-    List<AttAchDAO> getAtts();
-
-    /**
-     * 查找附件数量
-     *
-     * @return
-     */
-    public Long getAttsCount();
+    PageInfo<AttAchDAO> getAtts(int pageNum, int pageSize);
 }

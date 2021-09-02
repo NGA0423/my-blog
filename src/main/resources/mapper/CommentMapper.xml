@@ -35,4 +35,20 @@
         FROM
         <include refid="BASE_TABLE"/>
     </select>
+    <!--  删除评论  -->
+    <delete id="deleteComment">
+        DELETE FROM
+        <include refid="BASE_TABLE"/>
+        WHERE coid=#{coid}
+    </delete>
+    <!--  根据文章的主键获取评论：只是正常的评论  -->
+    <select id="getCommentsByCId" resultType="com.nga.dao.CommentDAO">
+        select
+        <include refid="BASE_COLUMN"/>
+        from
+        <include refid="BASE_TABLE"/> as cm
+        where cm.cid=#{cid}
+        and cm.status='approved'
+        order by cm.created
+    </select>
 </mapper>

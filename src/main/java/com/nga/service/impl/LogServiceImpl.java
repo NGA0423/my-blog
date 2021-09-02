@@ -14,6 +14,25 @@ import java.util.List;
 public class LogServiceImpl implements LogService {
     @Autowired
     private LogMapper logMapper;
+
+    /**
+     * 添加
+     *
+     * @param action
+     * @param data
+     * @param ip
+     * @param authorId
+     */
+    @Override
+    public void addLog(String action, String data, String ip, Integer authorId) {
+        LogDAO logDAO = new LogDAO();
+        logDAO.setAuthorId(authorId);
+        logDAO.setAction(action);
+        logDAO.setData(data);
+        logDAO.setIp(ip);
+        logMapper.addLog(logDAO);
+    }
+
     /**
      * 获取日志
      * @param pageNum

@@ -3,6 +3,7 @@ package com.nga.mapper;
 import com.nga.dao.cond.ContentCond;
 import com.nga.dao.ContentDAO;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -21,4 +22,24 @@ public interface ContentMapper {
      * @return
      */
     public Long getArticleCount();
+
+    /**
+     * 根据编号删除文章
+     * @param cid
+     */
+    public int deleteArticleById(@Param("cid") Integer cid);
+
+    /**
+     * 更新文章
+     * @param contentDAO
+     * @return
+     */
+    public int updateArticleById(ContentDAO contentDAO);
+
+    /**
+     * 根据编号获取文章
+     * @param cid
+     * @return
+     */
+    public ContentDAO getArticleById(@Param("cid")Integer cid);
 }

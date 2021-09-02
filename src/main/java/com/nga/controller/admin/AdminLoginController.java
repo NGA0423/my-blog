@@ -86,10 +86,6 @@ public class AdminLoginController {
         // 获取最新的20条日志
         PageInfo<LogDAO> logs = logService.getLogs(1, 5);
         List<LogDAO> list = logs.getList();
-        for (LogDAO log:list){
-            String fmdate = CommonsUtil.fmdate(log.getCreated(),"yyyy-MM-dd HH:mm:ss");
-            System.out.println(new java.util.Date().getTime());
-        }
         model.addAttribute("articles",contents);
         model.addAttribute("comments",comments);
         model.addAttribute("statistics",statistics);
