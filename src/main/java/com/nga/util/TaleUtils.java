@@ -388,7 +388,7 @@ public class TaleUtils {
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
-        int lastIndexOf = path.lastIndexOf("/" + 1);
+        int lastIndexOf = path.lastIndexOf("/") + 1;
         path = path.substring(0, lastIndexOf);
         File file = new File("");
         return file.getAbsolutePath() + "/";

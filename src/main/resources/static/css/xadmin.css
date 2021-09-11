@@ -532,4 +532,12 @@ table th, table td {
     font-size: 300px;
     color: #393D49;
 }
+.btn-submit{
+    height: 30px;
+    width: 100%;
+}
+.btn-submit.button{
+    padding: 15px 30px;
+    background-color: #009900;
+}
 

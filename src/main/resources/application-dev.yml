@@ -3,6 +3,10 @@ server:
   servlet:
     session:
       timeout: 1800
+#  ssl:
+#    key-store: classpath:yydsly.com.jks
+#    key-password: RP7mLBRf
+#    key-store-type: JKS
 
 
 spring:

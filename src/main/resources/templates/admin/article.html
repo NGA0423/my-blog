@@ -17,6 +17,11 @@
           <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
         <![endif]-->
 
+        <!-- 富文本编辑器 -->
+        <script src="/ueditor/ueditor.config.js"></script>
+        <script src="/ueditor/ueditor.all.js"></script>
+        <script src="/ueditor/lang/zh-cn/zh-cn.js"></script>
+        <script src="/ueditor/ueditor.all.js"></script>
         <style>
             input{
                 width: 30%;
@@ -64,23 +69,22 @@
                         </div>
                         <hr>
                         <div class="layui-card-body ">
-<pre class="layui-code" lay-title="JavaScript" lay-skin="notepad">
-    //xcity城市插件 基于于jquery与layui form 模块，使用之前先确认这两者是否引入 
-    //插件文件为 xcity.js,引入
-    id所有标签需要有class x-city  id没有根据自己需要定义
-    select lay-filter 属性值 为必须 "province/city/area"
-    //初始化
-    $('#x-city').xcity();
-    //传默认值 
-    $('#x-city').xcity('广东','广州市','东山区');
-</pre>
+                            <textarea name="content" id="content" style="min-height: 500px;min-width: 100%"></textarea>
+                        </div>
+                        <hr>
+                        <div class="btn-submit">
+                            <button class="article" style="background: #009688;color: #fefefe;width: 80px;height: 30px;">提交</button>
                         </div>
                     </div>
                 </div>
             </div>
+
         </div>
 
         <script type="text/javascript" src="../../static/js/xcity.js"></script>
+        <script type="text/javascript">
+            UE.getEditor('content');
+        </script>
         <script>
           layui.use(['form','code'], function(){
             form = layui.form;
