@@ -57,23 +57,31 @@
                     <div class="layui-card">
                         <div class="layui-card-body ">
                             <form class="layui-form layui-col-md12  layui-form-pane">
-                             <div class="layui-form-item x-city" id="start">
-                              <label class="layui-form-label">文章标题</label>
-                              <input type="text" placeholder="请输入文章标题(必填)" required="required">
-                            </div>
-                            <div class="layui-form-item x-city" id="end">
-                              <label class="layui-form-label">文章标签</label>
-                                <input type="text" placeholder="请输入文章标题(必填)" required="required">
-                            </div>
+                                 <div class="layui-form-item x-city" id="start">
+                                  <label class="layui-form-label">文章标题</label>
+                                  <input type="text" placeholder="请输入文章标题(必填)" required="required">
+                                </div>
+                                <div class="layui-form-item x-city" id="end">
+                                  <label class="layui-form-label">文章标签</label>
+                                    <input type="text" placeholder="请输入文章标题(必填)" required="required">
+                                </div>
+                                <hr>
+                                <div class="layui-card-body ">
+                                    <textarea name="content" id="content" style="min-height: 500px;min-width: 100%"></textarea>
+                                </div>
                           </form>
                         </div>
+
                         <hr>
-                        <div class="layui-card-body ">
-                            <textarea name="content" id="content" style="min-height: 500px;min-width: 100%"></textarea>
-                        </div>
-                        <hr>
+<!--                        <div class="form-group" id="comment-div">-->
+<!--                            <label class="col-sm-4">开启评论</label>-->
+<!--                            <div class="col-sm-8">-->
+<!--                                <div class="label"-->
+<!--                            </div>-->
+<!--                        </div>-->
                         <div class="btn-submit">
-                            <button class="article" style="background: #009688;color: #fefefe;width: 80px;height: 30px;">提交</button>
+                            <a class="btn btn-default waves-effect waves-light" th:href="@{/admin/category/index}">返回列表</a>
+                            <button class="article" style="background: #009688;color: #fefefe;width: 80px;height: 30px;">保存文章</button>
                         </div>
                     </div>
                 </div>
@@ -85,23 +93,5 @@
         <script type="text/javascript">
             UE.getEditor('content');
         </script>
-        <script>
-          layui.use(['form','code'], function(){
-            form = layui.form;
-
-            layui.code();
-
-            $('#start').xcity();
-            
-            $('#end').xcity('广东','广州市','东山区');
-
-          });
-        </script>
-        <script>var _hmt = _hmt || []; (function() {
-            var hm = document.createElement("script");
-            hm.src = "https://hm.baidu.com/hm.js?b393d153aeb26b46e9431fabaf0f6190";
-            var s = document.getElementsByTagName("script")[0];
-            s.parentNode.insertBefore(hm, s);
-          })();</script>
     </body>
 </html>

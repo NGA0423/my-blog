@@ -536,8 +536,12 @@ table th, table td {
     height: 30px;
     width: 100%;
 }
+form{
+    display: block;
+}
 .btn-submit.button{
     padding: 15px 30px;
     background-color: #009900;
+    text-align: right;
 }
 

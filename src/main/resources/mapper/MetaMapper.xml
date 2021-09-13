@@ -7,14 +7,70 @@
     <sql id="RELATION_SHIP_TABLE">
         <include refid="com.nga.mapper.RelationshipMapper.BASE_TABLE"/>
     </sql>
+    <!--  基本项  -->
     <sql id="BASE_COLUMN">
         m.mid,m.name,m.slug,m.type,m.contentType,m.description,m.sort,m. parent
     </sql>
+    <!--  添加项目信息  -->
+    <insert id="addMeta" parameterType="MetaDAO" useGeneratedKeys="true" keyProperty="mid">
+        INSERT INTO
+        <include refid="BASE_TABLE"/>
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            name,slug,type,description,sort,parent
+        </trim>
+        <trim prefix="VALUES(" suffix=")" suffixOverrides=",">
+            #{name},#{slug},#{type},#{description}.#{sort}.#{parent}
+        </trim>
+    </insert>
+    <!--  删除项目  -->
+    <delete id="deleteMetaById">
+        DELETE FROM
+        <include refid="BASE_TABLE"/>
+        WHERE mid=#{mid}
+    </delete>
+    <!--  更新项目  -->
+    <update id="updateMeta" parameterType="MetaDAO">
+        UPDATE
+        <include refid="BASE_TABLE"/>
+        <set>
+            <if test="name!=null">name=#{name}</if>
+            <if test="slug!=null">slug=#{slug}</if>
+            <if test="type!=null">type=#{type}</if>
+            <if test="description!=null">description=#{description}</if>
+            <if test="sort!=null">sort=#{sort}</if>
+            <if test="parent!=null">parent=#{parent}</if>
+        </set>
+        WHERE mid=#{mid}
+    </update>
+    <!--  根据主键编号获取项目  -->
+    <select id="getMetaById" resultType="MetaDAO">
+        SELECT
+        <include refid="BASE_COLUMN"/>
+        FROM
+        <include refid="BASE_TABLE"/>
+        AS m
+        WHERE
+        m.mid=#{mid}
+    </select>
+    <!--  根据条件获取项目  -->
+    <select id="getMetasByCond" resultType="MetaDAO" parameterType="MetaCond">
+        SELECT
+        <include refid="BASE_COLUMN"/>
+        FROM
+        <include refid="BASE_TABLE"/> AS m
+         <where>
+             <if test="name!=null">AND m.name=#{name}</if>
+             <if test="type!=null">AND m.type=#{type}</if>
+         </where>
+         ORDER BY m.sort
+    </select>
     <select id="getMetasCountByType" resultType="java.lang.Long">
         select count(*)
-        from <include refid="BASE_TABLE"/>
+        from
+        <include refid="BASE_TABLE"/>
         where type=#{type}
     </select>
+
     <resultMap id="BaseResultMap" type="com.nga.dao.MetaDAO">
         <id column="mid" jdbcType="INTEGER" property="mid"/>
         <id column="name" jdbcType="VARCHAR" property="name"/>
@@ -24,14 +80,19 @@
         <id column="sort" jdbcType="INTEGER" property="sort"/>
         <id column="parent" jdbcType="INTEGER" property="parent"/>
     </resultMap>
+
     <resultMap id="MetaUtil" type="com.nga.dao.MetaUtil" extends="BaseResultMap">
         <result column="count" property="count" jdbcType="INTEGER"/>
     </resultMap>
+
     <select id="selectFromSql" resultMap="MetaUtil" parameterType="Map">
         select
         a.*,count(b.cid) as count
-        from <include refid="BASE_TABLE"/> AS a
-        left join <include refid="RELATION_SHIP_TABLE"/>
+        from
+        <include refid="BASE_TABLE"/>
+        AS a
+        left join
+        <include refid="RELATION_SHIP_TABLE"/>
         as b on a.mid=b.mid
         where a.type=#{type}
         group by a.mid

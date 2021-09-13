@@ -12,6 +12,12 @@ import java.util.List;
 @Mapper
 public interface ContentMapper {
     /**
+     * 添加文章
+     *
+     * @param contentDAO
+     */
+    public void addArticle(ContentDAO contentDAO);
+    /**
      * 根据文章条件获取文章列表
      * @param contentCond
      * @return

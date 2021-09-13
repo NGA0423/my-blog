@@ -1,6 +1,7 @@
 package com.nga.service.impl;
 
 import com.nga.constan.ErrorConstant;
+import com.nga.constan.WebConst;
 import com.nga.dao.CommentDAO;
 import com.nga.dao.RelationshipDAO;
 import com.nga.dao.cond.CommentCond;
@@ -12,8 +13,10 @@ import com.nga.service.MetaService;
 import com.nga.util.BusinessException;
 import com.nga.util.StatisticsUtil;
 import com.nga.util.TypesUtil;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -35,6 +38,34 @@ public class ContentServiceImpl implements ContentService {
     @Autowired
     private MetaService metaService;
 
+
+    /**
+     * 添加文章
+     *
+     * @param contentDAO
+     */
+    @Transactional
+    @Override
+    @CacheEvict(value = {"articleCache","articleCaches"},allEntries = true,beforeInvocation = true)
+    public void addArticle(ContentDAO contentDAO) {
+        if (contentDAO==null)
+            throw BusinessException.withErrorCode(ErrorConstant.Common.PARAM_IS_EMPTY);
+        if (StringUtils.isBlank(contentDAO.getTitle()))
+            throw BusinessException.withErrorCode(ErrorConstant.Article.TITLE_CAN_NOT_EMPTY);
+        if (contentDAO.getTitle().length()> WebConst.MAX_TITLE_COUNT)
+            throw BusinessException.withErrorCode(ErrorConstant.Article.TITLE_IS_TOO_LONG);
+        if (StringUtils.isBlank(contentDAO.getContent()))
+            throw BusinessException.withErrorCode(ErrorConstant.Article.CONTENT_CAN_NOT_EMPTY);
+        if (contentDAO.getContent().length()>WebConst.MAX_TEXT_COUNT)
+            throw BusinessException.withErrorCode(ErrorConstant.Article.CONTENT_IS_TOO_LONG);
+        // 标签和分类
+        String tags = contentDAO.getTags();
+        String categories = contentDAO.getCategories();
+        contentMapper.addArticle(contentDAO);
+        Integer cid = contentDAO.getCid();
+        metaService.addMetas(cid,tags,TypesUtil.TAG.getType());
+        metaService.addMetas(cid,categories,TypesUtil.CATEGORY.getType());
+    }
 
     /**
      * 获取评论列表
