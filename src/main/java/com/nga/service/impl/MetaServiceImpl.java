@@ -9,6 +9,7 @@ import com.nga.dao.RelationshipDAO;
 import com.nga.dao.cond.MetaCond;
 import com.nga.mapper.MetaMapper;
 import com.nga.mapper.RelationshipMapper;
+import com.nga.model.ContentModel;
 import com.nga.service.ContentService;
 import com.nga.service.MetaService;
 import com.nga.util.BusinessException;
@@ -167,18 +168,18 @@ public class MetaServiceImpl implements MetaService {
             List<RelationshipDAO> relationShipByMid = relationshipMapper.getRelationShipByMid(mid);
             if (relationShipByMid != null && relationShipByMid.size() > 0) {
                 for (RelationshipDAO relationshipDAO : relationShipByMid) {
-                    ContentDAO articleById = contentService.getArticleById(relationshipDAO.getCid());
+                    ContentModel articleById = contentService.getArticleById(relationshipDAO.getCid());
                     if (articleById != null) {
-                        ContentDAO contentDAO = new ContentDAO();
-                        contentDAO.setCid(relationshipDAO.getCid());
+                        ContentModel temp = new ContentModel();
+                        temp.setCid(relationshipDAO.getCid());
                         if (type.equals(TypesUtil.TAG.getType())) {
-                            contentDAO.setCategories(reMeta(name, articleById.getCategories()));
+                            temp.setCategories(reMeta(name, articleById.getCategories()));
                         }
                         if (type.equals(TypesUtil.TAG.getType())) {
-                            contentDAO.setTags(reMeta(name, articleById.getTags()));
+                            temp.setTags(reMeta(name, articleById.getTags()));
                         }
                         // 将删除的资源去除
-                        contentService.updateArticleById(contentDAO);
+                        contentService.updateArticleById(temp);
                     }
                 }
                 relationshipMapper.deleteRelationShipByMid(mid);
@@ -235,7 +236,7 @@ public class MetaServiceImpl implements MetaService {
      */
     @Override
     @Cacheable(value = "metaCaches", key = "'metas_'+#p0")
-    public List<MetaUtil> getMetaList(String type, String orderby, int limit) {
+    public List<MetaDAO> getMetaList(String type, String orderby, int limit) {
         if (StringUtils.isNotBlank(type)) {
             if (StringUtils.isNotBlank(orderby)) {
                 orderby = "count desc,a.mid desc";

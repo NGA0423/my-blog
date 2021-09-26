@@ -1,6 +1,7 @@
 package com.nga.controller;
 
 import com.nga.constan.WebConst;
+import com.nga.dao.MetaDAO;
 import com.nga.dao.MetaUtil;
 import com.nga.dao.UserDAO;
 import com.nga.dao.cond.ContentCond;
@@ -46,7 +47,7 @@ public abstract class BaseErrorController {
      * @return
      */
     public BaseErrorController blogBaseData(HttpServletRequest request, ContentCond contentCond) {
-        List<MetaUtil> links = metaService.getMetaList(TypesUtil.LINK.getType(), null, WebConst.MAX_POSTS);
+        List<MetaDAO> links = metaService.getMetaList(TypesUtil.LINK.getType(), null, WebConst.MAX_POSTS);
         request.setAttribute("links", links);
         return this;
     }

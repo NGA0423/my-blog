@@ -7,8 +7,34 @@
     <sql id="BASE_COLUMN">
         cm.coid,cm.cid,cm.created,cm.author,cm.authorId,cm.ownerId,cm.mail,cm.url,cm.ip,cm.agent,cm.content,cm.type,cm.status,cm.parent
     </sql>
+    <!--  新增评论  -->
+    <insert id="addComment" parameterType="CommentDAO">
+        INSERT INTO
+        <include refid="BASE_TABLE"/>
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            cid,created,author,authorId,ownerId,mail,url,ip,agent,type,status,parent,content
+        </trim>
+        <trim prefix="VALUES(" suffix=")"  suffixOverrides=",">
+            #{cid},#{created},#{author},#{authorId},#{ownerId},#{mail},#{url},#{ip},#{agent},#{type},#{status},#{parent},#{content}
+        </trim>
+    </insert>
+    <!-- 更新评论状态   -->
+    <update id="updateCommentStatus">
+        UPDATE FROM
+        <include refid="BASE_TABLE"/>
+        SET status=#{status}
+        WHERE coid=#{coid}
+    </update>
+    <!-- 获取单条评论   -->
+    <select id="getCommentById" resultType="CommentDAO">
+        SELECT
+        <include refid="BASE_COLUMN"/>
+        FROM
+        <include refid="BASE_TABLE"/> as cm
+         WHERE cm.coid=#{coid}
+    </select>
     <!--  根据条件获取评论列表  -->
-    <select id="getCommentByCond" resultType="CommentDAO" parameterType="CommentCond">
+    <select id="getCommentByCond" resultType="com.nga.model.CommentModel" parameterType="CommentCond">
         select
         <include refid="BASE_COLUMN"/>
         from

@@ -1,7 +1,10 @@
 package com.nga.service;
 
+import com.github.pagehelper.PageInfo;
 import com.nga.dao.CommentDAO;
-import com.nga.dao.ContentDAO;
+
+import com.nga.dao.cond.ContentCond;
+import com.nga.model.ContentModel;
 import com.nga.util.StatisticsUtil;
 import org.apache.commons.lang3.StringUtils;
 
@@ -11,32 +14,9 @@ public interface ContentService {
     /**
      * 添加文章
      *
-     * @param contentDAO
+     * @param contentModel
      */
-    public void addArticle(ContentDAO contentDAO);
-
-    /**
-     * 获取评论列表
-     *
-     * @param limit
-     * @return
-     */
-    public List<CommentDAO> getComments(int limit);
-
-    /**
-     * 获取最新文章
-     *
-     * @param limit
-     * @return
-     */
-    public List<ContentDAO> getNewArticles(int limit);
-
-    /**
-     * 查询文章总数
-     *
-     * @return
-     */
-    public StatisticsUtil getArticleCount();
+    public void addArticle(ContentModel contentModel);
 
     /**
      * 根据编号删除文章
@@ -44,6 +24,13 @@ public interface ContentService {
      * @param cid
      */
     public void deleteArticleById(Integer cid);
+
+    /**
+     * 更新文章
+     *
+     * @param contentModel
+     */
+    public void updateArticleById(ContentModel contentModel);
 
     /**
      * 更新分类
@@ -59,13 +46,37 @@ public interface ContentService {
      * @param cid
      * @return
      */
-    public ContentDAO getArticleById(Integer cid);
+    public ContentModel getArticleById(Integer cid);
 
     /**
-     * 更新文章
-     *
-     * @param contentDAO
+     * 根据条件获取文章列表
+     * @param contentCond
+     * @param pageNum
+     * @param pageSize
+     * @return
      */
-    public void updateArticleById(ContentDAO contentDAO);
+    PageInfo<ContentModel> getArticlesByCond(ContentCond contentCond,int pageNum,int pageSize);
 
+    /**
+     * 添加文章点击量
+     * @param contentModel
+     */
+    public void updateContentByCid(ContentModel contentModel);
+
+    /**
+     * 获取最近的文章
+     * @param pageNum
+     * @param pageSize
+     * @return
+     */
+    PageInfo<ContentModel> getRecentlyArticle(int pageNum,int pageSize);
+
+    /**
+     * 搜索文章
+     * @param para
+     * @param pageNum
+     * @param pageSize
+     * @return
+     */
+    PageInfo<ContentModel> searchArticle(String para,int pageNum,int pageSize);
 }

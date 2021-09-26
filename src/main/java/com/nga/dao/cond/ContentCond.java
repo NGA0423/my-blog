@@ -31,11 +31,11 @@ public class ContentCond {
     /**
      * 开始时间戳
      */
-    private String startTime;
+    private Integer startTime;
     /**
      * 结束时间戳
      */
-    private String endTime;
+    private Integer endTime;
 
     public String getTag() {
         return tag;
@@ -85,19 +85,19 @@ public class ContentCond {
         this.type = type;
     }
 
-    public String getStartTime() {
+    public Integer getStartTime() {
         return startTime;
     }
 
-    public void setStartTime(String startTime) {
+    public void setStartTime(Integer startTime) {
         this.startTime = startTime;
     }
 
-    public String getEndTime() {
+    public Integer getEndTime() {
         return endTime;
     }
 
-    public void setEndTime(String endTime) {
+    public void setEndTime(Integer endTime) {
         this.endTime = endTime;
     }
 }

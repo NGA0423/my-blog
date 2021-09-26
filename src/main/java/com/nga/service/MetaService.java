@@ -70,5 +70,5 @@ public interface MetaService {
      * @param limit
      * @return
      */
-    public List<MetaUtil> getMetaList(String type, String orderby, int limit);
+    public List<MetaDAO> getMetaList(String type, String orderby, int limit);
 }

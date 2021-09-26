@@ -1,6 +1,10 @@
 package com.nga.model;
 
+/**
+ * Created by Donghua.Chen on 2018/4/20.
+ */
 public class UserModel {
+
     /** 主键编号 */
     private Integer uid;
     /** 用户名 */
@@ -10,17 +14,17 @@ public class UserModel {
     /** email */
     private String email;
     /** 主页地址 */
-    private String homeUrl ;
-    /** 显示用户的名称 */
-    private String screenName ;
-    /** 用户注册时间戳的GMT unix时间戳 */
+    private String homeUrl;
+    /**  用户显示的名称 */
+    private String screenName;
+    /** 用户注册时的GMT unix时间戳 */
     private Integer created;
     /** 最后活动时间 */
     private Integer activated;
-    /** 上传登录最后活跃时间 */
+    /** 上次登录最后活跃时间 */
     private Integer logged;
     /** 用户组 */
-    private Integer groupName;
+    private String groupName;
 
     public Integer getUid() {
         return uid;
@@ -94,11 +98,11 @@ public class UserModel {
         this.logged = logged;
     }
 
-    public Integer getGroupName() {
+    public String getGroupName() {
         return groupName;
     }
 
-    public void setGroupName(Integer groupName) {
+    public void setGroupName(String groupName) {
         this.groupName = groupName;
     }
 }

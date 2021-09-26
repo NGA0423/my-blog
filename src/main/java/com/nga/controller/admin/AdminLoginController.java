@@ -1,12 +1,12 @@
 package com.nga.controller.admin;
 
 import com.github.pagehelper.PageInfo;
-import com.nga.dao.CommentDAO;
-import com.nga.dao.ContentDAO;
-import com.nga.dao.LogDAO;
-import com.nga.dao.UserDAO;
+import com.nga.dao.*;
+import com.nga.model.CommentModel;
+import com.nga.model.ContentModel;
 import com.nga.service.ContentService;
 import com.nga.service.LogService;
+import com.nga.service.SiteService;
 import com.nga.service.impl.UserServiceImpl;
 import com.nga.util.CommonsUtil;
 import com.nga.util.ResultUtil;
@@ -36,23 +36,27 @@ public class AdminLoginController {
 
     @Autowired
     private ContentService contentService;
+
     @Autowired
     private LogService logService;
 
+    @Autowired
+    private SiteService siteService;
+
     @GetMapping("/toLogin")
-    public String toLogin(){
+    public String toLogin() {
 
         return "admin/login";
     }
 
-    @GetMapping({"/","/index","/index.html"})
-    public String index(){
+    @GetMapping({"/", "/index", "/index.html"})
+    public String index() {
         return "admin/index";
     }
 
 
     @PostMapping("/login")
-    public String login(@RequestParam("username")String username,@RequestParam("password") String password,Model model,HttpSession session){
+    public String login(@RequestParam("username") String username, @RequestParam("password") String password, Model model, HttpSession session) {
         // 获取当前用户
         Subject subject = SecurityUtils.getSubject();
         // 将用户输入的用户名写密码封装到一个UsernamePasswordToken对象中
@@ -60,59 +64,59 @@ public class AdminLoginController {
         // 用Subject对象执行登录方法
         try {
             subject.login(token);
-            session.setAttribute("loginUser",username);
-            model.addAttribute("username",username);
+            session.setAttribute("loginUser", username);
+            model.addAttribute("username", username);
             return "admin/index";
-        }catch (UnknownAccountException e){
-            model.addAttribute("msg","用户名不存在");
+        } catch (UnknownAccountException e) {
+            model.addAttribute("msg", "用户名不存在");
             return "admin/login";
-        }catch (IncorrectCredentialsException e){
-            model.addAttribute("msg","密码错误");
+        } catch (IncorrectCredentialsException e) {
+            model.addAttribute("msg", "密码错误");
             return "admin/login";
         }
 
     }
 
     @GetMapping("/desktop")
-    public String desktop(Model model,HttpSession session){
+    public String desktop(Model model, HttpSession session) {
         Date date = new Date();
         String format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(date);
-        model.addAttribute("nowDate",format);
+        model.addAttribute("nowDate", format);
 
         Object username = session.getAttribute("loginUser");
-        StatisticsUtil statistics = contentService.getArticleCount();
-        List<ContentDAO> contents = contentService.getNewArticles(5);
-        List<CommentDAO> comments = contentService.getComments(5);
+        List<CommentModel> comments = siteService.getComments(5);
+        List<ContentModel> contents = siteService.getNewArticles(5);
+        StatisticsDAO statistics = siteService.getStatistics();
         // 获取最新的20条日志
         PageInfo<LogDAO> logs = logService.getLogs(1, 5);
         List<LogDAO> list = logs.getList();
-        model.addAttribute("articles",contents);
-        model.addAttribute("comments",comments);
-        model.addAttribute("statistics",statistics);
-        model.addAttribute("username",username);
-        model.addAttribute("logs",list);
+        model.addAttribute("articles", contents);
+        model.addAttribute("comments", comments);
+        model.addAttribute("statistics", statistics);
+        model.addAttribute("username", username);
+        model.addAttribute("logs", list);
 
         return "admin/my-desktop";
     }
 
     @PostMapping("/register")
     @ResponseBody
-    public ResultUtil register(UserDAO user){
+    public ResultUtil register(UserDAO user) {
         String msg = userService.addUser(user);
-        if ("134".equals(msg)){
-            return new ResultUtil(-1,false,"该用户名已被注册!");
-        }else if ("135".equals(msg)){
-            return new ResultUtil(-1,false,"该用户名已被注册!");
-        }else if ("502".equals(msg)){
-            return new ResultUtil(-1,false,"注册失败!");
-        }else if ("200".equals(msg)){
-            return new ResultUtil(-1,true,"注册成功!");
-        }else {
-            return new ResultUtil(-1,false,"未知错误!");
+        if ("134".equals(msg)) {
+            return new ResultUtil(-1, false, "该用户名已被注册!");
+        } else if ("135".equals(msg)) {
+            return new ResultUtil(-1, false, "该用户名已被注册!");
+        } else if ("502".equals(msg)) {
+            return new ResultUtil(-1, false, "注册失败!");
+        } else if ("200".equals(msg)) {
+            return new ResultUtil(-1, true, "注册成功!");
+        } else {
+            return new ResultUtil(-1, false, "未知错误!");
         }
     }
 
-//    @GetMapping("/logout")
+    //    @GetMapping("/logout")
 //    public void logout(HttpSession session, HttpServletResponse response) {
 //
 //        try {

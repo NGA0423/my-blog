@@ -16,6 +16,90 @@
     <sql id="REL_USER_COLUMN">
         u.username
     </sql>
+
+    <!--  新增单个附件  -->
+    <insert id="addAttAch" parameterType="AttAchModel">
+        INSERT INTO
+        <include refid="BASE_TABLE"/>
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            fname,ftype, fkey,authorId, created,
+        </trim>
+        <trim prefix="VALUES(" suffix=")" suffixOverrides=",">
+            #{fname},#{ftype}, #{fkey},#{authorId}，UNIX_TIMESTAMP(NOW()),
+        </trim>
+    </insert>
+
+    <!--  批量新增附件  -->
+    <insert id="batchAddAch" parameterType="list" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO
+        <include refid="BASE_TABLE"/>
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            fname,ftype, fkey,authorId, created,
+        </trim>
+        VALUES
+        <foreach collection="list" item="AttAchModel" index="index" separator=",">
+            (
+            <trim suffix="" suffixOverrides=",">
+                #{fname},#{ftype}, #{fkey},#{authorId}，UNIX_TIMESTAMP(NOW()),
+            </trim>
+            )
+        </foreach>
+    </insert>
+
+    <!--  删除附件  -->
+    <delete id="deleteAttAch" parameterType="AttAchModel">
+        DELETE FROM
+        <include refid="BASE_TABLE"/>
+        WHERE
+        id=#{id}
+    </delete>
+
+    <!--  更新附件  -->
+    <update id="updateAttAch" parameterType="AttAchModel">
+        UPDATE
+        <include refid="BASE_TABLE"/>
+        <set>
+            <if test="fname != null">
+                fname=#{fname},
+            </if>
+            <if test="ftype != null">
+                ftype=#{ftype},
+            </if>
+            <if test="fkey != null">
+                fkey=#{fkey},
+            </if>
+            <if test="authorId != null">
+                authorId=#{authorId},
+                created=UNIX_TIMESTAMP(NOW()),
+            </if>
+        </set>
+    </update>
+    <!--  根据主键获取附件信息  -->
+    <select id="getAttAchById" resultType="com.nga.dao.AttAchDAO">
+        SELECT
+        <trim suffix="" suffixOverrides=",">
+            <include refid="BASE_COLUMN"/>
+            <include refid="REL_USER_COLUMN"/>
+        </trim>
+        FROM
+        <include refid="BASE_TABLE"/> AS aa
+         LEFT JOIN <include refid="TABLE_USER"/> AS u
+         ON aa.authorId=u.uid
+         WHERE aa.id=#{id}
+    </select>
+    <!--  查找所有附件  -->
+    <select id="getAtts" resultType="AttAchDAO">
+        SELECT
+        <trim suffix="" suffixOverrides=",">
+            <include refid="BASE_COLUMN"/>
+            <include refid="REL_USER_COLUMN"/>
+        </trim>
+        FROM <include refid="BASE_TABLE"/> AS aa
+        LEFT JOIN <include refid="TABLE_USER"/> AS u
+        ON aa.authorId=u.uid
+        ORDER BY aa.created DEC
+    </select>
+    <!--  查找附件数量  -->
     <select id="getAttsCount" resultType="java.lang.Long">
         SELECT count(*)
         FROM

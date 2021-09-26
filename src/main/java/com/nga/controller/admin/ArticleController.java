@@ -7,6 +7,7 @@ import com.nga.dao.ContentDAO;
 import com.nga.dao.MetaDAO;
 import com.nga.dao.cond.ContentCond;
 import com.nga.dao.cond.MetaCond;
+import com.nga.model.ContentModel;
 import com.nga.service.ArticleService;
 import com.nga.service.ContentService;
 import com.nga.service.LogService;
@@ -28,8 +29,6 @@ import java.util.List;
 @RequestMapping("/admin/article")
 public class ArticleController extends BaseErrorController {
     @Autowired
-    private ArticleService articleService;
-    @Autowired
     private ContentService contentService;
     @Autowired
     private LogService logService;
@@ -43,9 +42,16 @@ public class ArticleController extends BaseErrorController {
      * @return
      */
     @GetMapping("/management")
-    public String index(HttpServletRequest request, @ApiParam(name = "page", value = "页数", required = false) @RequestParam(name = "page", required = false, defaultValue = "1") int page, @ApiParam(name = "limit", value = "每页数量", required = false) @RequestParam(name = "limit", required = false, defaultValue = "15") int limit) {
-        PageInfo<ContentDAO> byCond = articleService.getArticlesByCond(new ContentCond(), page, limit);
-        request.setAttribute("byCond", byCond);
+    public String index(
+            HttpServletRequest request,
+            @ApiParam(name = "page", value = "页数", required = false)
+            @RequestParam(name = "page", required = false, defaultValue = "1")
+                    int page,
+            @ApiParam(name = "limit", value = "每页数量", required = false)
+            @RequestParam(name = "limit", required = false, defaultValue = "15")
+                    int limit) {
+        PageInfo<ContentModel> articles= contentService.getArticlesByCond(new ContentCond(), page, limit);
+        request.setAttribute("articles", articles);
         return "admin/article-management";
     }
 
@@ -96,18 +102,18 @@ public class ArticleController extends BaseErrorController {
                                  @ApiParam(name = "allowComment", value = "是否允许评论", required = true)
                                  @RequestParam(name = "allowComment", required = true)
                                          Boolean allowComment) {
-        ContentDAO contentDAO = new ContentDAO();
-        contentDAO.setTitle(title);
-        contentDAO.setTitlePic(titlePic);
-        contentDAO.setSlug(slug);
-        contentDAO.setContent(content);
-        contentDAO.setType(type);
-        contentDAO.setStatus(status);
-        contentDAO.setTags(type.equals(TypesUtil.ARTICLE.getType()) ? tags : null);
+        ContentModel contentModel = new ContentModel();
+        contentModel.setTitle(title);
+        contentModel.setTitlePic(titlePic);
+        contentModel.setSlug(slug);
+        contentModel.setContent(content);
+        contentModel.setType(type);
+        contentModel.setStatus(status);
+        contentModel.setTags(type.equals(TypesUtil.ARTICLE.getType()) ? tags : null);
         // 只允许博客文章有分类，防止作品被收入分类
-        contentDAO.setCategories(type.equals(TypesUtil.ARTICLE.getType()) ? categories : null);
-        contentDAO.setAllowComment(allowComment ? 1 : 0);
-        contentService.addArticle(contentDAO);
+        contentModel.setCategories(type.equals(TypesUtil.ARTICLE.getType()) ? categories : null);
+        contentModel.setAllowComment(allowComment ? 1 : 0);
+        contentService.addArticle(contentModel);
 
         return APIResponse.success();
     }
@@ -145,18 +151,18 @@ public class ArticleController extends BaseErrorController {
                                      @ApiParam(name = "allowComment", value = "是否允许评论", required = true)
                                      @RequestParam(name = "allowComment", required = true)
                                              Boolean allowComment) {
-        ContentDAO contentDAO = new ContentDAO();
-        contentDAO.setCid(cid);
-        contentDAO.setTitle(title);
-        contentDAO.setTitlePic(titlePic);
-        contentDAO.setSlug(slug);
-        contentDAO.setContent(content);
-        contentDAO.setType(type);
-        contentDAO.setStatus(status);
-        contentDAO.setTags(tags);
-        contentDAO.setCategories(categories);
-        contentDAO.setAllowComment(allowComment ? 1 : 0);
-        contentService.updateArticleById(contentDAO);
+        ContentModel contentModel = new ContentModel();
+        contentModel.setCid(cid);
+        contentModel.setTitle(title);
+        contentModel.setTitlePic(titlePic);
+        contentModel.setSlug(slug);
+        contentModel.setContent(content);
+        contentModel.setType(type);
+        contentModel.setStatus(status);
+        contentModel.setTags(tags);
+        contentModel.setCategories(categories);
+        contentModel.setAllowComment(allowComment ? 1 : 0);
+        contentService.updateArticleById(contentModel);
         return APIResponse.success();
     }
 

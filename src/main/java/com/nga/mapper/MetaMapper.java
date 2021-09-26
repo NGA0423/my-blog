@@ -29,7 +29,7 @@ public interface MetaMapper {
     /**
      * 根据sql查询
      */
-    public List<MetaUtil> selectFromSql(Map<String, Object> paraMap);
+    public List<MetaDAO> selectFromSql(Map<String, Object> paraMap);
 
     /**
      * 根据条件查询
