@@ -29,14 +29,14 @@
         </set>
         where username=#{username,jdbcType=VARCHAR}
     </update>
-    <select id="queryUserByName" parameterType="String" resultType="UserDAO">
-        select
-        <include refid="BASE_COLUMN"/>
-        from
-        <include refid="BASE_TABLE"/>
-        where
-        username=#{username,jdbcType=VARCHAR}
-    </select>
+<!--    <select id="queryUserByName" parameterType="String" resultType="UserDAO">-->
+<!--        select-->
+<!--        <include refid="BASE_COLUMN"/>-->
+<!--        from-->
+<!--        <include refid="BASE_TABLE"/>-->
+<!--        where-->
+<!--        username=#{username,jdbcType=VARCHAR}-->
+<!--    </select>-->
     <insert id="addUser" parameterType="UserDAO">
         insert into <include refid="BASE_TABLE"/>
         <include refid="BASE_COLUMN"/>

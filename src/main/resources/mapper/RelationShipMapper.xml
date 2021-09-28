@@ -7,6 +7,7 @@
     <sql id="BASE_COLUMN">
         rs.cid,rs.mid
     </sql>
+    <!--  新增  -->
     <insert id="addRelationShip" parameterType="RelationshipDAO">
         insert into
         <include refid="BASE_TABLE"/>
@@ -17,20 +18,20 @@
             #{cid},#{mid}
         </trim>
     </insert>
-    <!-- 根据ID删除记录 -->
+    <!-- 根据文章编号删除和meta编号关联 -->
     <delete id="deleteRelationShipById">
         delete from
         <include refid="BASE_TABLE"/>
         where cid=#{cid}
         and mid=#{mid}
     </delete>
-    <!-- 删除文章的关联记录 -->
+    <!-- 根据文章编号删除关联 -->
     <delete id="deleteRelationShipByCId">
         delete from
         <include refid="BASE_TABLE"/>
         where cid=#{cid}
     </delete>
-    <!-- 删除meta的所有记录 -->
+    <!-- 根据meta编号删除关联 -->
     <delete id="deleteRelationShipByMid">
         delete from
         <include refid="BASE_TABLE"/>
