@@ -60,7 +60,7 @@ public interface ContentMapper {
     ContentModel getArticleById(@Param("cid")Integer cid);
 
     /**
-     * 获奖归档数据
+     * 获取归档数据
      * @param contentCond
      * @return
      */
