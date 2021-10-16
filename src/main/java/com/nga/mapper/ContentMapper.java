@@ -45,11 +45,19 @@ public interface ContentMapper {
     public int updateArticleById(ContentModel contentModel);
 
     /**
+     * 更新文章的评论数
+     * @param cid
+     * @param commentsNum
+     * @return
+     */
+    int updateArticleCountById(@Param("cid")Integer cid,@Param("commentsNum")Integer commentsNum);
+
+    /**
      * 根据编号获取文章
      * @param cid
      * @return
      */
-    public ContentModel getArticleById(@Param("cid")Integer cid);
+    ContentModel getArticleById(@Param("cid")Integer cid);
 
     /**
      * 获奖归档数据

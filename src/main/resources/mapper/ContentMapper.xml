@@ -4,50 +4,34 @@
     <sql id="BASE_TABLE">
         t_contents
     </sql>
+    <!--  用户表  -->
+    <sql id="TABLE_USER">
+        <include refid="com.nga.mapper.UserMapper.BASE_TABLE"/>
+    </sql>
+    <!--  文章基本列  -->
     <sql id="BASE_COLUMN">
         c.cid,c.title,c.titlePic,c.slug,c.created,c.modified,c.content,c.authorId,
         c.type,c.status,c.tags,c.categories,c.hits,c.commentsNum,c.allowComment,c.allowComment,
         c.allowPing,c.allowFeed
     </sql>
-    <!--  根据条件获取文章列表  -->
-    <select id="getArticlesByCond" resultType="ContentDAO" parameterType="ContentCond">
-        select
-        <include refid="BASE_COLUMN"/>
-        from
-        <include refid="BASE_TABLE"/> as c
-         <where>
-             <if test="tag!=null">
-                 and c.tag like CONCAT('%',#{tag},'%')
-             </if>
-             <if test="category!=null">
-                 and c.categories like CONCAT('%',#{category},'%')
-             </if>
-             <if test="status!=null">
-                 and c.status like CONCAT('%',#{status},'%')
-             </if>
-             <if test="title!=null">
-                 and c.title like CONCAT('%',#{title},'%')
-             </if>
-             <if test="content!=null">
-                 and c.content like CONCAT('%',#{content},'%')
-             </if>
-             <if test="type!=null">
-                 and c.type like CONCAT('%',#{type},'%')
-             </if>
-             <if test="startTime!=null">
-                 and c.created like CONCAT('%',#{startTime},'%')
-             </if>
-             <if test="endTime!=null">
-                 and c.created like CONCAT('%',#{endTime},'%')
-             </if>
-         </where>
-         order by c.created desc
-    </select>
-    <!-- 获取文章总数 -->
-    <select id="getArticleCount" resultType="java.lang.Long">
-        SELECT count(*)
-        FROM <include refid="BASE_TABLE"/>
-    </select>
+    <!--  关联查询的用户表所需的字段  -->
+    <sql id="REL_USER_COLUMN">
+        u.username,
+    </sql>
+
+    <!--  添加文章  -->
+    <insert id="addArticle" parameterType="com.nga.model.ContentModel" useGeneratedKeys="true" keyProperty="cid">
+        INSERT INTO
+        <include refid="BASE_TABLE"/>
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            title,titlePic,slug,created,modified,content,authorId,type,status,tags,
+            categories,hits,commentsNum,allowComment,allowComment,allowPing,allowFeed
+        </trim>
+        <trim prefix="VALUES(" suffix=")" suffixOverrides=",">
+            #{title},#{titlePic},#{slug},UNIX_TEMESTAMP(NOW()),#{modified},#{content},#{authorId},#{type},#{status},#{tags},
+            #{categories},#{hits},#{commentsNum},#{allowComment},#{allowComment},#{allowPing},#{allowFeed}
+        </trim>
+    </insert>
 
     <!--  删除文章  -->
     <delete id="deleteArticleById">
@@ -55,4 +39,156 @@
         <include refid="BASE_TABLE"/>
         WHERE cid=#{cid}
     </delete>
+
+    <!--  更新文章  -->
+    <update id="updateArticleById" parameterType="com.nga.model.ContentModel">
+        UPDATE
+        <include refid="BASE_TABLE"/>
+        <set>
+            <if test="title!=null">
+                title=#{title},
+            </if>
+            <if test="titlePic!=null">
+                titlePic=#{titlePic},
+            </if>
+            <if test="slug!=null">
+                slug=#{slug},
+            </if>
+            <if test="content!=null">
+                content=#{content},
+            </if>
+            <if test="type!=null">
+                type=#{type},
+            </if>
+            <if test="status!=null">
+                status=#{status},
+            </if>
+            <if test="tags!=null">
+                tags=#{tags},
+            </if>
+            <if test="categories!=null">
+                categories=#{categories},
+            </if>
+            <if test="hits!=null">
+                hits=#{hits},
+            </if>
+            <if test="commentsNum!=null">
+                commentsNum=#{commentsNum},
+            </if>
+            <if test="allowPing!=null">
+                allowPing=#{allowPing},
+            </if>
+            <if test="allowFeed!=null">
+                allowFeed=#{allowFeed},
+            </if>
+        </set>
+        WHERE cid=#{cid}
+    </update>
+
+    <!--  更新文章评论数  -->
+    <update id="updateArticleCountById">
+        UPDATE
+        <include refid="BASE_TABLE"/>
+        SET commentsNum=#{commentsNum}
+        WHERE cid=#{cid}
+    </update>
+
+    <!--  根据编号获取文章  -->
+    <select id="getArticleById" resultType="com.nga.model.ContentModel">
+        SELECT
+        <include refid="BASE_COLUMN"/>
+        FROM
+        <include refid="BASE_TABLE"/>
+        AS c
+        WHERE c.cid={cid}
+    </select>
+    <!--  根据条件获取文章列表  -->
+    <select id="getArticlesByCond" resultType="ContentDAO" parameterType="ContentCond">
+        select
+        <include refid="BASE_COLUMN"/>
+        from
+        <include refid="BASE_TABLE"/>
+        as c
+        <where>
+            <if test="tag!=null">
+                and c.tags like CONCAT('%',#{tag},'%')
+            </if>
+            <if test="category!=null">
+                and c.categories like CONCAT('%',#{category},'%')
+            </if>
+            <if test="status!=null">
+                and c.status like CONCAT('%',#{status},'%')
+            </if>
+            <if test="title!=null">
+                and c.title like CONCAT('%',#{title},'%')
+            </if>
+            <if test="content!=null">
+                and c.content like CONCAT('%',#{content},'%')
+            </if>
+            <if test="type!=null">
+                and c.type like CONCAT('%',#{type},'%')
+            </if>
+            <if test="startTime!=null">
+                and c.created like CONCAT('%',#{startTime},'%')
+            </if>
+            <if test="endTime!=null">
+                and c.created like CONCAT('%',#{endTime},'%')
+            </if>
+        </where>
+        order by c.created desc
+    </select>
+    <!-- 获取文章总数 -->
+    <select id="getArticleCount" resultType="java.lang.Long">
+        SELECT count(*)
+        FROM
+        <include refid="BASE_TABLE"/>
+    </select>
+
+    <resultMap id="archiveDAOMap" type="com.nga.dao.ArchiveDAO">
+        <id column="date" property="date"/>
+        <result column="count" property="count"/>
+    </resultMap>
+    <!--  获取归档数据  -->
+    <select id="getArchive" resultMap="archiveDAOMap" parameterType="com.nga.dao.cond.ContentCond">
+        SELECT
+        FROM_UNIXTIME(created,'%Y年%m月') as date ,
+        count(*) as count
+        FROM
+        <include refid="BASE_TABLE"/>
+        <where>
+            type ='post'
+            and status ='publish'
+            <if test="startTime != null">
+                AND c.created &gt;= #{startTime, jdbcType=INTEGER}
+            </if>
+            <if test="endTime != null">
+                AND c.created &lt;= #{endTime, jdbcType=INTEGER}
+            </if>
+        </where>
+        group by date
+        order by date desc
+    </select>
+
+    <!--  获取最近文章  -->
+    <select id="getRecentlyArticle" resultType="com.nga.model.ContentModel">
+        SELECT
+        cid,title
+        FROM
+        <include refid="BASE_TABLE"/>
+        ORDER BY created DESC
+    </select>
+    <!--  模糊搜索  -->
+    <select id="searchArticle" resultType="com.nga.model.ContentModel">
+        SELECT
+        <include refid="BASE_COLUMN"/>
+        FROM
+        <include refid="BASE_TABLE"/>
+        AS c
+        <where>
+            c.title LIKE CONCAT('%',#{param},'%')
+            OR
+            c.content LIKE CONCAT('%',#{param},'%')
+        </where>
+
+    </select>
 </mapper>

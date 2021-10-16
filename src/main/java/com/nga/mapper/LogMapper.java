@@ -2,6 +2,7 @@ package com.nga.mapper;
 
 import com.nga.dao.LogDAO;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -13,11 +14,18 @@ public interface LogMapper {
      * 获取日志
      * @return
      */
-    public List<LogDAO> getLogs();
+    List<LogDAO> getLogs();
 
     /**
      * 添加日志
      * @param logDAO
      */
-    public void addLog(LogDAO logDAO);
+    void addLog(LogDAO logDAO);
+
+    /**
+     * 删除日志
+     * @param id
+     * @return
+     */
+    int deleteLogById(@Param("id") Integer id);
 }

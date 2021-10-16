@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 @Mapper
 public interface UserMapper {
-    public UserDAO queryUserByName(String username);
+    UserDAO queryUserByName(String username);
 
-    public String addUser(UserDAO user);
+    String addUser(UserDAO user);
 }

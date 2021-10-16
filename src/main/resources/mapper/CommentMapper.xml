@@ -34,7 +34,7 @@
          WHERE cm.coid=#{coid}
     </select>
     <!--  根据条件获取评论列表  -->
-    <select id="getCommentByCond" resultType="com.nga.model.CommentModel" parameterType="CommentCond">
+    <select id="getCommentsByCond" resultType="com.nga.model.CommentModel" parameterType="CommentCond">
         select
         <include refid="BASE_COLUMN"/>
         from

@@ -16,39 +16,39 @@ public interface CommentMapper {
      * @param commentModel
      * @return
      */
-    public int addComment(CommentModel commentModel);
+    int addComment(CommentModel commentModel);
     /**
      * 根据条件获取评论列表
      * @param commentCond
      * @return
      */
-    public List<CommentModel> getCommentByCond(CommentCond commentCond);
+    List<CommentModel> getCommentByCond(CommentCond commentCond);
     /**
      * 获取评论数量
      * @return
      */
-    public Long getCommentsCount();
+    Long getCommentsCount();
 
     /**
      * 获取单条评论
      * @param cid
      * @return
      */
-    public CommentModel getCommentById(@Param("cid")Integer cid);
+    CommentModel getCommentById(@Param("cid")Integer cid);
 
     /**
      * 根据文章编号获取评论列表
      * @param cid
      * @return
      */
-    public List<CommentModel> getCommentsByCId(@Param("cid")Integer cid);
+    List<CommentModel> getCommentsByCId(@Param("cid")Integer cid);
 
     /**
      * 删除评论
      * @param coid
      * @return
      */
-    public int deleteComment(@Param("coid")Integer coid);
+    int deleteComment(@Param("coid")Integer coid);
 
     /**
      * 更新评论状态
@@ -56,12 +56,12 @@ public interface CommentMapper {
      * @param status
      * @return
      */
-    public int updateCommentStatus(@Param("coid")Integer coid,@Param("status")String status);
+    int updateCommentStatus(@Param("coid")Integer coid,@Param("status")String status);
 
     /**
      * 根据条件获取评论列表
      * @param commentCond
      * @return
      */
-    public List<CommentModel> getCommentsByCond(CommentCond commentCond);
+    List<CommentModel> getCommentsByCond(CommentCond commentCond);
 }

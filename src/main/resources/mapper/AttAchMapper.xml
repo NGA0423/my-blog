@@ -18,7 +18,7 @@
     </sql>
 
     <!--  新增单个附件  -->
-    <insert id="addAttAch" parameterType="AttAchModel">
+    <insert id="addAttAch" parameterType="com.nga.model.AttAchModel">
         INSERT INTO
         <include refid="BASE_TABLE"/>
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -47,7 +47,7 @@
     </insert>
 
     <!--  删除附件  -->
-    <delete id="deleteAttAch" parameterType="AttAchModel">
+    <delete id="deleteAttAch">
         DELETE FROM
         <include refid="BASE_TABLE"/>
         WHERE
@@ -55,7 +55,7 @@
     </delete>
 
     <!--  更新附件  -->
-    <update id="updateAttAch" parameterType="AttAchModel">
+    <update id="updateAttAch" parameterType="com.nga.model.AttAchModel">
         UPDATE
         <include refid="BASE_TABLE"/>
         <set>
@@ -88,7 +88,7 @@
          WHERE aa.id=#{id}
     </select>
     <!--  查找所有附件  -->
-    <select id="getAtts" resultType="AttAchDAO">
+    <select id="getAtts" resultType="com.nga.dao.AttAchDAO">
         SELECT
         <trim suffix="" suffixOverrides=",">
             <include refid="BASE_COLUMN"/>

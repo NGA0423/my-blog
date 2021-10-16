@@ -12,7 +12,7 @@
         m.mid,m.name,m.slug,m.type,m.contentType,m.description,m.sort,m. parent
     </sql>
     <!--  添加项目信息  -->
-    <insert id="addMeta" parameterType="MetaDAO" useGeneratedKeys="true" keyProperty="mid">
+    <insert id="addMeta" parameterType="com.nga.model.MetaModel" useGeneratedKeys="true" keyProperty="mid">
         INSERT INTO
         <include refid="BASE_TABLE"/>
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -29,7 +29,7 @@
         WHERE mid=#{mid}
     </delete>
     <!--  更新项目  -->
-    <update id="updateMeta" parameterType="MetaDAO">
+    <update id="updateMeta" parameterType="com.nga.model.MetaModel">
         UPDATE
         <include refid="BASE_TABLE"/>
         <set>
@@ -43,7 +43,7 @@
         WHERE mid=#{mid}
     </update>
     <!--  根据主键编号获取项目  -->
-    <select id="getMetaById" resultType="MetaDAO">
+    <select id="getMetaById" resultType="com.nga.model.MetaModel">
         SELECT
         <include refid="BASE_COLUMN"/>
         FROM
@@ -53,7 +53,7 @@
         m.mid=#{mid}
     </select>
     <!--  根据条件获取项目  -->
-    <select id="getMetasByCond" resultType="MetaDAO" parameterType="MetaCond">
+    <select id="getMetasByCond" resultType="com.nga.model.MetaModel" parameterType="com.nga.dao.cond.MetaCond">
         SELECT
         <include refid="BASE_COLUMN"/>
         FROM
